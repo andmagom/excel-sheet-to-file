@@ -5,21 +5,21 @@ const process = require('./process');
 const workbook = new ExcelJS.Workbook();
 
 const RESULT_FOLDER = 'result'
+const ORIGINAL_FOLDER = 'excels'
 
-async function processFile(nameFile) {
-  await workbook.xlsx.readFile(nameFile)
-    .then(process.getTotalSheets)
-    .then(res => loop(res.workbook, nameFile))
+async function processFile(folder, nameFile) {
+  await workbook.xlsx.readFile(folder + '/' + nameFile)
+    .then(res => loop(res, folder, nameFile))
     .catch(err => console.log(err));
 }
 
-async function loop(workbook, nameFile) {
+async function loop(workbook, folder, nameFile) {
   const ids = [];
   workbook.worksheets.forEach(element => {
     ids.push(element.id);
   });
   for (const key of ids) {
-    workbookCopy = await workbook.xlsx.readFile(nameFile);
+    workbookCopy = await workbook.xlsx.readFile(folder + '/' + nameFile);
     await process.process3(workbookCopy, key, ids)
   }
 }
@@ -30,26 +30,20 @@ function createFolder(dir) {
   }
 }
 
-function executeOnFiles(dir) {
-  fs.readdir(dir, (err, files) => {
-    if (err) console.log(err);
-    else {
-      const promises = [];
-      files.forEach(elem => {
-        if (elem.endsWith('.xlsx')) {
-          promises.push(processFile(elem));
-        }
-      });
-      Promise.all(promises)
-        .then(() => console.log('FINISHED'))
-        .catch(err => console.log(err));
+async function executeOnFiles(dir) {
+  files = fs.readdirSync(dir);
+  for (const elem of files) {
+    if (elem.endsWith('.xlsx')) {
+      await processFile(ORIGINAL_FOLDER, elem);
     }
-  })
+  }
 }
 
 function main() {
   createFolder(RESULT_FOLDER);
-  executeOnFiles('.');
+  executeOnFiles(ORIGINAL_FOLDER)
+    .then(() => console.log('FINISHED'))
+    .catch(err => console.log(err));
 }
 
 main();
