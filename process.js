@@ -16,6 +16,7 @@ async function process3(workbook, id, ids) {
   personName = ""
   idp = ""
   category = ""
+  funciones = ""
   workbook.worksheets.forEach(element => {
     nameSheet = element.name;
     row = element.getRow(10)
@@ -27,9 +28,12 @@ async function process3(workbook, id, ids) {
     row = element.getRow(16)
     idp = row.getCell(5).toString().trim()
 
+    row = element.getRow(28)
+    funciones = row.getCell(4).toString().trim()
+
     category = nameSheet.trim().split(' ');
     category = category.pop();
-    category = getNameCategory(nameSheet, category);
+    category = getNameCategory(funciones, nameSheet, category);
   });
   if(exceptions.includes(nameSheet)) {
     console.log('Bypass ' + nameSheet + ' Sheet');
@@ -40,14 +44,18 @@ async function process3(workbook, id, ids) {
   console.log('Ready ' + nameOutput);
 }
 
-function getNameCategory(nameSheet, name) {
-  if( nameSheet.length == 2 || nameSheet.length == 3) {
+function getNameCategory(funciones, nameSheet, name) {
+  if(funciones.includes('SENNOVA')) {
+    return 'SENNOVA';
+  } else if(funciones.includes('bilingüismo')) {
+    return 'BILINGUISMO';
+  } else if(funciones.includes('AGROSENA')) {
+    return 'AGROSENA';
+  } else if( nameSheet.length == 2 || nameSheet.length == 3) {
     if (nameSheet.toUpperCase().startsWith('S')) {
       return 'SENNOVA';
     }
   } else if(nameSheet.includes('SENNOVA')) {
-    return 'SENNOVA';
-  } else if(nameSheet.includes('SEN')) {
     return 'SENNOVA';
   } else if(nameSheet.includes('BILINGUISMO')) {
     return 'BILINGUISMO';

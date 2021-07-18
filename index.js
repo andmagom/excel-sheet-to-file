@@ -19,7 +19,8 @@ async function loop(workbook, folder, nameFile) {
     ids.push(element.id);
   });
   for (const key of ids) {
-    workbookCopy = await workbook.xlsx.readFile(folder + '/' + nameFile);
+    const workbook2 = new ExcelJS.Workbook();
+    workbookCopy = await workbook2.xlsx.readFile(folder + '/' + nameFile);
     await process.process3(workbookCopy, key, ids)
   }
 }
