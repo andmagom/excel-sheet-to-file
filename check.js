@@ -6,28 +6,13 @@ const RESULT_FOLDER = 'result'
 const workbook = new ExcelJS.Workbook();
 
 // CITY
-const bogota = ['BOGOTA D.C', 'BOGOTA', 'BOGOTA D.C.', 'BOGOTÀ', 'BOGOTÁ, D.C.', 'BOGOTA  D.C'];
+const bogota = ['BOGOTA D.C', 'BOGOTA', 'BOGOTA D.C.', 'BOGOTÀ', 'BOGOTÁ, D.C.', 'BOGOTA  D.C', 'BOGOTA  DC', 'BOGOTA DC'];
 const floridablanca = ['FLORIDABLANCA', 'FLORIDA BLANCA'];
-/*
-const medellin = ['MEDELLÍN', 'MEDELLIN'];
-const puertoasis = ['PUERTO ASÍS', 'PUERTO ASIS'];
-const ibague = ['IBAGUE', 'IBAGUÉ'];
-const garzon = ['GARZÓN', 'GARZON'];
-const giron = ['GIRÓN', 'GIRON'];
-const apartado = ['APARTADÓ', 'APARTADO'];
-const sanandrestumaco = ['SAN ANDRES DE TUMACO', 'SAN ANDRÉS DE TUMACO'];
-const itagui = ['ITAGÜÍ', 'ITAGUI'];
-const popayan = ['POPAYÁN', 'POPAYAN'];
-const malaga = ['MÁLAGA', 'MALAGA'];
-*/
 
 // REGIONAL
 
 const valle = ['VALLE', 'VALLE DEL CAUCA'];
-/*
-const quindio = ['QUINDÍO', 'QUINDIO'];
-const bolivar = ['BOLÍVAR', 'BOLIVAR'];
-*/
+
 
 async function readResume(nameFile) {
   const workbookResume = await workbook.xlsx.readFile(nameFile);
